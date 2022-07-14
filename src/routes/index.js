@@ -8,17 +8,27 @@ import { getArticles,
         truncateArticles
      } from '../controllers/articles.js'
 
-export const route = Router()
+import { Login, Register, Logout, UserList } from '../controllers/Users.js'
 
+import { verifyToken } from '../middleware/verify.js'
+import { refreshToken } from '../middleware/refreshToken.js'
+
+export const route = Router()
 
 route.get("/api/v1/article", getArticles)
 route.get("/api/v1/article/:slug", getDetailArticle)
 
 
-route.post("/api/v1/article&api_key=:key", postArticles)
-route.put("/api/v1/article/update/:id&api_key=:key", updateArticles)
+route.post("/api/v1/article", postArticles)
+route.put("/api/v1/article/update/:id", updateArticles)
 route.put("/api/v1/article/getLoved/:id", getLovedArticle)
 
 
 route.delete("/api/v1/article/delete/:id", destroyArticles)
 route.delete("/api/v1/article/truncate", truncateArticles)
+
+route.get("/api/v1/users", verifyToken , UserList)
+route.post("/api/v1/login", Login)
+route.post("/api/v1/register", Register)
+route.delete("/api/v1/logout", Logout)
+route.get("/api/v1/refresh", refreshToken)

@@ -89,7 +89,7 @@ export const postArticles = async (req, res) => {
         const avatar = req.file?.path
         const slugify = slug(`${title}`)
 
-        if(!req.originalUrl.includes(`api_key=${process.env.API_KEY}`)) return res.sendStatus(401)
+        // if(!req.originalUrl.includes(`api_key=${process.env.API_KEY}`)) return res.sendStatus(401)
 
         await Articles.create({
             title : title,
@@ -118,8 +118,6 @@ export const updateArticles = async (req, res) => {
         const { title, category, content, create, timeRead } = req.body
         const avatar = req.file?.path
         const slugify = slug(`${title}`)
-
-        if(!req.originalUrl.includes(`api_key=${process.env.API_KEY}`)) return res.sendStatus(401)
 
         const data = await Articles.findAll({
             where : {

@@ -6,9 +6,12 @@ import { dbAuthenticate } from './configs/index.js'
 import { route } from './routes/index.js'
 import helmet from 'helmet'
 import rateLimit from 'express-rate-limit'
+import cors from 'cors'
+import cookieParser from 'cookie-parser'
 
 const app = express()
 const PORT = process.env.PORT || 8080
+const Origin = ["https://tricky.vercel.app", "http://localhost:3000"]
 
 const fileStorage = multer.diskStorage({
     destination : (req, file, cb)=> {
@@ -34,12 +37,21 @@ const filter = (req, file, cb) => {
 
 config()
 const main = () => {
-    // dbAuthenticate()
+    
+    app.use(cookieParser())
+    app.set('trust proxy', 1)
+    dbAuthenticate()
     app.use(express.json())
     
     // Must in top level
     
     app.use(morgan("dev"))
+    app.use(cors({
+        origin : Origin[1],
+        credentials : true
+    }))
+
+
     app.use(helmet({
         crossOriginResourcePolicy: false,
     }))
