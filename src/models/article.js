@@ -15,6 +15,9 @@ export const Articles = Blogs.define("articles", {
     avatar : {
         type : DataTypes.TEXT,
     },
+    avatarSource : {
+        type : DataTypes.TEXT
+    },
     category : {
         type : DataTypes.STRING({ length: 50 })
     },

@@ -3,8 +3,10 @@ import { Users } from '../models/users.js';
 
 export const refreshToken = async (req, res) => {
     try {
-        const refreshToken = req.cookies?.refreshToken
-        if(!refreshToken) return res.send(" cookie not found ");
+        const refreshToken = req.cookies.refreshToken
+        if(!refreshToken) return res.json({
+            message : "Cookie not found"
+        })
 
         const findUser = await Users.findAll({
             where : {
@@ -12,7 +14,7 @@ export const refreshToken = async (req, res) => {
             }
         })
 
-        if(!findUser[0]) return res.sendStatus(403)
+        if(!findUser[0]) return res.redirect("/api/v1/article")
 
         jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decode) => {
             if(err) return res.sendStatus(403)
@@ -22,7 +24,7 @@ export const refreshToken = async (req, res) => {
             const userRole = findUser[0].role
 
             const refreshToken = jwt.sign({ userID, userEmail, userRole },process.env.ACCESS_TOKEN_SECRET,{
-                expiresIn : "15d"
+                expiresIn : "15s"
             })
 
             res.json({ refreshToken })

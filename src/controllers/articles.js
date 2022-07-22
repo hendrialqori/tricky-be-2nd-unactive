@@ -35,6 +35,7 @@ export const getDetailArticle = async (req, res) => {
                 slug : slug
             }
         })
+        if(!detailArticle[0]) return res.sendStatus(404)
 
         await Articles.update({
             seen : detailArticle[0].seen == 0 ? 1 : detailArticle[0].seen + 1
@@ -44,7 +45,7 @@ export const getDetailArticle = async (req, res) => {
             }
         })
 
-        res.status(200).send(detailArticle)
+        res.status(200).send(detailArticle[0])
 
     } catch (error) {
         res.json({
@@ -70,7 +71,6 @@ export const getLovedArticle = async (req, res) => {
             }
          }) 
 
-        //  await fs.rm(`${detailArticle[0].avatar}`)
 
          res.status(200).json({
             message : "Loved increment 1"
@@ -85,15 +85,14 @@ export const getLovedArticle = async (req, res) => {
 
 export const postArticles = async (req, res) => {  
     try {    
-        const { title, category, content, create, timeRead } = req.body
+        const { title, avatarSource ,category, content, create, timeRead } = req.body
         const avatar = req.file?.path
         const slugify = slug(`${title}`)
-
-        // if(!req.originalUrl.includes(`api_key=${process.env.API_KEY}`)) return res.sendStatus(401)
 
         await Articles.create({
             title : title,
             avatar : avatar,
+            avatarSource : avatarSource,
             category : category,
             content : content,
             create : create,
@@ -115,7 +114,7 @@ export const postArticles = async (req, res) => {
 export const updateArticles = async (req, res) => {
     try {
         const { id } = req.params
-        const { title, category, content, create, timeRead } = req.body
+        const { title, avatarSource ,category, content, create, timeRead } = req.body
         const avatar = req.file?.path
         const slugify = slug(`${title}`)
 
@@ -125,9 +124,12 @@ export const updateArticles = async (req, res) => {
             }
         })
 
+         data[0]?.avatar && await fs.rm(`${data[0]?.avatar}`)
+
         await Articles.update({
             title : title,
             avatar : avatar,
+            avatarSource : avatarSource,
             category : category,
             content : content,
             create : create,
@@ -139,7 +141,6 @@ export const updateArticles = async (req, res) => {
             }
         })
         res.sendStatus(200)
-        data[0]?.avatar && await fs.rm(`${data[0]?.avatar}`)
 
     } catch (error) {
         res.json({
@@ -152,7 +153,6 @@ export const destroyArticles = async (req, res) => {
     
     try {
         const { id } = req.params
-        // if(!req.originalUrl.includes(`api_key=${process.env.API_KEY}`)) return res.sendStatus(401)
         
         const data = await Articles.findAll({
             where : {

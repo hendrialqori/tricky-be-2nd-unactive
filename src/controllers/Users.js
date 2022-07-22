@@ -41,11 +41,11 @@ export const Login = async(req, res) => {
     try {
         const findUser = await Users.findAll({
             where : {
-                email : req.body.email
+                email : email
             }
         })
         const matchPassword = await bcrypt.compare(password, findUser[0]?.password)
-        if(!matchPassword) return res.status(403).json({ msg : "Password salah" })
+        if(!matchPassword) return res.json({ message : "Password salah" })
 
         const userID = findUser[0].id
         const userEmail = findUser[0].email
@@ -59,9 +59,9 @@ export const Login = async(req, res) => {
 
         res.cookie("refreshToken", refreshToken, {
             httpOnly : true,
-            sameSite : "none",
-            secure : process.env.NODE_ENV == 'production',
             maxAge : 24 * 60 * 60 * 1000,
+            sameSite : "none",
+            secure : true,
         })
 
         await Users.update({
@@ -71,7 +71,7 @@ export const Login = async(req, res) => {
         res.json({ accessToken })
 
     } catch (error) {
-        res.status(404).json({
+       return res.json({
             message : "Email tidak terdaftar"
         })
     }
