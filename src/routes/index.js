@@ -24,10 +24,10 @@ route.put("/api/v1/article/getLoved/:id", getLovedArticle)
 
 
 route.delete("/api/v1/article/delete/:id", verifyToken,destroyArticles)
-route.delete("/api/v1/article/truncate", truncateArticles)
+// route.delete("/api/v1/article/truncate", truncateArticles)
 
-route.get("/api/v1/users", UserList)
+// route.get("/api/v1/users", UserList)
 route.post("/api/v1/login", Login)
-route.post("/api/v1/register", Register)
+// route.post("/api/v1/register", Register)
 route.delete("/api/v1/logout", Logout)
 route.get("/api/v1/refresh", refreshToken)
