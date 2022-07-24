@@ -2,7 +2,6 @@ import express from 'express'
 import multer from 'multer'
 import { dbAuthenticate } from './configs/index.js'
 import { route } from './routes/index.js'
-import morgan from 'morgan'
 import helmet from 'helmet'
 import rateLimit from 'express-rate-limit'
 import cors from 'cors'
@@ -52,11 +51,10 @@ const imagesDir = () => {
     dbAuthenticate()
     
     app.use(cors({
-        origin : "http://localhost:8080",
+        origin : process.env.EXPRESS_MAIN_ORIGIN,
         credentials : true
     }))
 
-    app.use(morgan("dev"))
     app.use(helmet({
         crossOriginResourcePolicy: false,
     }))
@@ -77,13 +75,6 @@ const imagesDir = () => {
     app.use((req, res, next) => {
         res.status(200).send("Api not found")
     })
-
-    app.get("/", (req, res) => {
-        res.json({
-            message : "Hello folks!"
-        })
-    })
-
 
     app.listen(PORT, ()=> {
         console.log(`Server is running in http://localhost:${PORT}`)
