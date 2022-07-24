@@ -28,6 +28,6 @@ route.delete("/api/v1/article/delete/:id", verifyToken,destroyArticles)
 
 route.get("/api/v1/users", UserList)
 route.post("/api/v1/login", Login)
-route.post("/api/v1/register", Register)
+// route.post("/api/v1/register", Register)
 route.delete("/api/v1/logout", Logout)
 route.get("/api/v1/refresh", refreshToken)
