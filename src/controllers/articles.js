@@ -3,6 +3,7 @@ import slug from "slug"
 import { config } from 'dotenv'
 import fs from 'fs/promises'
 
+
 config()
 export const getArticles = async (req, res) => {
     try {
@@ -87,7 +88,7 @@ export const postArticles = async (req, res) => {
     try {    
         const { title, avatarSource ,category, content, create, timeRead } = req.body
         const avatar = req.file?.path
-        const slugify = slug(`${title}`)
+        const slugify = slug(`${title}`)    
 
         await Articles.create({
             title : title,

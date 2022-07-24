@@ -2,18 +2,20 @@ import express from 'express'
 import multer from 'multer'
 import { dbAuthenticate } from './configs/index.js'
 import { route } from './routes/index.js'
+import morgan from 'morgan'
 import helmet from 'helmet'
 import rateLimit from 'express-rate-limit'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import { config } from 'dotenv'
+import fileSync from 'fs'
 
 
 const app = express()
 const PORT = process.env.PORT || 8080
 
 const fileStorage = multer.diskStorage({
-    destination : (req, file, cb)=> {
+    destination : (req, file, cb)=> { 
         cb(null, "images")
     },
     filename : (req, file, cb) => {
@@ -33,22 +35,28 @@ const filter = (req, file, cb) => {
      }
 }
 
-
+const imagesDir = () => {
+    const existDir = fileSync.existsSync("images")
+    if(!existDir) return fileSync.mkdirSync("images") 
+    else console.log("Images dir already exist!")
+}
+    
 
 (()=> {
     config()
-
+    imagesDir()
+    
     app.use(express.json())
     app.use(cookieParser())
 
     dbAuthenticate()
     
     app.use(cors({
-        origin : process.env.EXPRESS_MAIN_ORIGIN,
+        origin : "http://localhost:8080",
         credentials : true
     }))
-    console.log(process.env.EXPRESS_MAIN_ORIGIN)
 
+    app.use(morgan("dev"))
     app.use(helmet({
         crossOriginResourcePolicy: false,
     }))
