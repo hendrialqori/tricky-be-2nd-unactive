@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize'
-import { Blogs } from "../configs/index.js";
+import { Blogs } from '../configs/index.js'
 
 export const Articles = Blogs.define("articles", {
     id : {
