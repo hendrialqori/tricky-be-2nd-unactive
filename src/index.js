@@ -37,7 +37,8 @@ const filter = (req, file, cb) => {
 const imagesDir = () => {
     const existDir = fileSync.existsSync("images")
     if(!existDir) return fileSync.mkdirSync("images") 
-    else console.log("Images dir already exist!")
+    
+    return
 }
     
 
@@ -72,8 +73,10 @@ const imagesDir = () => {
 
     app.use('/images', express.static('images'))
 
-    app.use((req, res, next) => {
-        res.status(200).send("Api not found")
+    app.get("/", (req, res) => {
+        res.json({
+            message : "Hello Hendri, Its works!"
+        })
     })
 
     app.listen(PORT, ()=> {
