@@ -18,12 +18,12 @@ export const route = Router()
 route.get("/api/v1/article", getArticles)
 route.get("/api/v1/article/:slug", getDetailArticle)
 
-route.post("/api/v1/article" ,postArticles)
-route.put("/api/v1/article/update/:id", verifyToken,updateArticles)
+route.post("/api/v1/article", verifyToken ,postArticles)
+route.put("/api/v1/article/update/:id" , verifyToken ,updateArticles)
 route.put("/api/v1/article/getLoved/:id", getLovedArticle)
 
 
-route.delete("/api/v1/article/delete/:id", verifyToken,destroyArticles)
+route.delete("/api/v1/article/delete/:id", verifyToken ,destroyArticles)
 // route.delete("/api/v1/article/truncate", truncateArticles)
 
 // route.get("/api/v1/users", UserList)

@@ -45,7 +45,7 @@ export const Login = async(req, res) => {
             }
         })
         const matchPassword = await bcrypt.compare(password, findUser[0]?.password)
-        if(!matchPassword) return res.json({ message : "Password salah" })
+        if(!matchPassword) return res.status(404).json({ message : "Password salah" })
 
         const userID = findUser[0].id
         const userEmail = findUser[0].email
@@ -71,7 +71,7 @@ export const Login = async(req, res) => {
         res.json({ accessToken })
 
     } catch (error) {
-       return res.json({
+       return res.status(404).json({
             message : "Email tidak terdaftar"
         })
     }

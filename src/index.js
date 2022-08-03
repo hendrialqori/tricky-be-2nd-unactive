@@ -51,10 +51,13 @@ const imagesDir = () => {
 
     dbAuthenticate()
     
-    app.use(cors({
-        origin : process.env.EXPRESS_MAIN_ORIGIN,
-        credentials : true
-    }))
+    app.use((req, res, next) => {
+        res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000")
+        res.setHeader("Access-Control-Allow-Methods","GET, POST, PUT, PATCH, DELETE, OPTION")
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+        res.setHeader("Access-Control-Allow-Credentials", true)
+        next()
+    })
 
     app.use(helmet({
         crossOriginResourcePolicy: false,
@@ -78,6 +81,8 @@ const imagesDir = () => {
             message : "Hello Hendri, Its works!"
         })
     })
+
+    console.log(process.env.node_env)
 
     app.listen(PORT, ()=> {
         console.log(`Server is running in http://localhost:${PORT}`)
