@@ -4,7 +4,7 @@ import { Users } from '../models/users.js';
 export const refreshToken = async (req, res) => {
     try {
         const refreshToken = req.cookies.refreshToken
-        if(!refreshToken) return res.json({
+        if(!refreshToken) return res.status(404).json({
             message : "Cookie not found"
         })
 
