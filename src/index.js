@@ -37,8 +37,7 @@ const filter = (req, file, cb) => {
 const imagesDir = () => {
     const existDir = fileSync.existsSync("images")
     if(!existDir) return fileSync.mkdirSync("images") 
-    
-    return
+    else return false
 }
     
 
